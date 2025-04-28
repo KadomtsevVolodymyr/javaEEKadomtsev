@@ -1,0 +1,69 @@
+.card {
+  width: 450px;
+  margin: 100px auto;
+  padding: 20px;
+}
+
+.header {
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.ui-panel {
+  padding: 20px !important;
+}
+
+.ui-panelgrid.ui-noborder .ui-panelgrid-cell {
+  border: none !important;
+  padding: 8px 15px !important;
+}
+
+.label {
+  font-weight: bold;
+  width: 150px;
+}
+
+.value {
+  width: 300px;
+}
+
+.ui-button {
+  margin-right: 10px;
+}
+
+.ui-toolbar {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.ui-messages {
+  margin-bottom: 20px;
+}
+
+.ui-menubar {
+  background: none !important;
+  border: none !important;
+}
+
+.ui-menuitem {
+  margin-right: 10px;
+}
+
+h1 {
+  color: #2196f3;
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: #666;
+  margin-bottom: 20px;
+}

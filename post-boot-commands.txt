@@ -1,0 +1,8 @@
+create-jdbc-connection-pool --datasourceclassname org.postgresql.ds.PGSimpleDataSource --restype javax.sql.DataSource --property user=postgres:password=postgres:url="jdbc:postgresql://localhost:5432/bookstore" bookstorePool
+
+set resources.jdbc-connection-pool.bookstorePool.connection-validation-method=table
+set resources.jdbc-connection-pool.bookstorePool.validation-table-name=orders
+set resources.jdbc-connection-pool.bookstorePool.is-connection-validation-required=true
+set resources.jdbc-connection-pool.bookstorePool.fail-all-connections=true
+
+create-jdbc-resource --connectionpoolid bookstorePool java:app/jdbc/bookstoreDB 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<resources>
+    <jdbc-resource enabled="true" jndi-name="java:app/jdbc/bookstoreDB" object-type="user" pool-name="BookstorePool"/>
+    
+    <jdbc-connection-pool name="BookstorePool"
+                         res-type="javax.sql.DataSource"
+                         datasource-classname="org.postgresql.ds.PGSimpleDataSource"
+                         ping="true"
+                         is-connection-validation-required="true"
+                         connection-validation-method="auto-commit">
+        <property name="serverName" value="localhost"/>
+        <property name="portNumber" value="5432"/>
+        <property name="databaseName" value="bookstore"/>
+        <property name="user" value="bookstore"/>
+        <property name="password" value="bookstore"/>
+        <property name="URL" value="jdbc:postgresql://localhost:5432/bookstore"/>
+    </jdbc-connection-pool>
+</resources> 

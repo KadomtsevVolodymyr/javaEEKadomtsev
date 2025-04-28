@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>
+        <ui:insert name="title">Bookstore Management System</ui:insert>
+    </title>
+    <h:outputStylesheet library="css" name="styles.css" />
+</h:head>
+<h:body>
+    <div id="header">
+        <h:form>
+            <p:menubar>
+                <p:menuitem value="Home" outcome="/index" icon="pi pi-home" />
+                <p:menuitem value="Books" outcome="/books/list" icon="pi pi-book" />
+                <p:menuitem value="Orders" outcome="/orders/list" icon="pi pi-shopping-cart" />
+                <p:menuitem value="Admin" outcome="/admin/dashboard" icon="pi pi-cog" rendered="#{loginBean.admin}" />
+                <p:menuitem value="Logout" action="#{loginBean.logout}" icon="pi pi-sign-out"
+                    rendered="#{loginBean.loggedIn}" />
+            </p:menubar>
+        </h:form>
+    </div>
+
+    <div id="content">
+        <ui:insert name="content">
+            <p>Default content</p>
+        </ui:insert>
+    </div>
+
+    <div id="footer">
+        <p>&copy; 2024 Bookstore Management System</p>
+    </div>
+</h:body>
+
+</html>
