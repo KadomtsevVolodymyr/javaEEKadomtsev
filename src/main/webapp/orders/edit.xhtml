@@ -7,28 +7,72 @@
     <title>Edit Order</title>
 </h:head>
 <h:body>
-    <h:form>
-        <p:panel header="Edit Order" style="width: 600px; margin: 0 auto;">
-            <p:panelGrid columns="2" style="margin-top: 20px;">
-                <p:outputLabel for="customerName" value="Customer Name:" />
-                <p:inputText id="customerName" value="#{orderBean.selectedOrder.customerName}" required="true"
-                    requiredMessage="Customer Name is required" />
+    <h:form id="mainForm">
+        <p:panel header="Edit Order" style="width: 800px; margin: 0 auto;">
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+                <p:outputLabel value="Customer Name:" />
+                <p:inputText value="#{orderBean.selectedOrder.customerName}" required="true" />
 
-                <p:outputLabel for="customerEmail" value="Customer Email:" />
-                <p:inputText id="customerEmail" value="#{orderBean.selectedOrder.customerEmail}" required="true"
-                    requiredMessage="Customer Email is required" />
+                <p:outputLabel value="Customer Email:" />
+                <p:inputText value="#{orderBean.selectedOrder.customerEmail}" required="true" />
 
-                <p:outputLabel for="shippingAddress" value="Shipping Address:" />
-                <p:inputTextarea id="shippingAddress" value="#{orderBean.selectedOrder.shippingAddress}" required="true"
-                    requiredMessage="Shipping Address is required" rows="3" cols="30" />
-
-                <p:outputLabel for="totalAmount" value="Total Amount:" />
-                <p:inputNumber id="totalAmount" value="#{orderBean.selectedOrder.totalAmount}" required="true"
-                    requiredMessage="Total Amount is required" decimalPlaces="2" />
+                <p:outputLabel value="Shipping Address:" />
+                <p:inputTextarea value="#{orderBean.selectedOrder.shippingAddress}" required="true" rows="3"
+                    style="width: 100%; max-width: 400px;" />
             </p:panelGrid>
 
-            <p:commandButton value="Save" action="#{orderBean.update}" style="margin-top: 20px; margin-right: 10px;" />
-            <p:commandButton value="Cancel" action="list" immediate="true" style="margin-top: 20px;" />
+            <p:panel header="Available Books" style="margin-top: 20px;">
+                <p:dataTable id="availableBooks" value="#{orderBean.books}" var="book" paginator="true" rows="5">
+                    <p:column headerText="Title">
+                        <h:outputText value="#{book.title}" />
+                    </p:column>
+                    <p:column headerText="Author">
+                        <h:outputText value="#{book.author}" />
+                    </p:column>
+                    <p:column headerText="Price">
+                        <h:outputText value="#{book.price}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Stock">
+                        <h:outputText value="#{book.stock}" />
+                    </p:column>
+                    <p:column headerText="Quantity">
+                        <p:inputNumber id="quantity" value="#{orderBean.quantities[book.id]}" min="1"
+                            max="#{book.stock}" decimalPlaces="0" />
+                    </p:column>
+                    <p:column headerText="Add">
+                        <p:commandButton icon="pi pi-plus" action="#{orderBean.addBookToOrder(book)}"
+                            process="@this @parent:quantity" update=":mainForm:selectedBooks :mainForm:availableBooks"
+                            disabled="#{orderBean.quantities[book.id] == null or orderBean.quantities[book.id] le 0 or orderBean.quantities[book.id] gt book.stock}" />
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+            <p:panel id="selectedBooks" header="Selected Books" style="margin-top: 20px;">
+                <p:dataTable id="selectedBooksTable" value="#{orderBean.selectedBooks}" var="item">
+                    <p:column headerText="Title">
+                        <h:outputText value="#{item.book.title}" />
+                    </p:column>
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{item.quantity}" />
+                    </p:column>
+                    <p:column headerText="Price">
+                        <h:outputText value="#{item.book.price * item.quantity}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Actions">
+                        <p:commandButton icon="pi pi-trash" action="#{orderBean.removeBookFromOrder(item)}"
+                            process="@this" update=":mainForm:selectedBooks" />
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+            <p:commandButton value="Save Changes" action="#{orderBean.save}" style="margin-top: 20px;"
+                disabled="#{empty orderBean.selectedBooks}" />
+            <p:commandButton value="Cancel" action="list" immediate="true"
+                style="margin-top: 20px; margin-left: 10px;" />
         </p:panel>
     </h:form>
 </h:body>

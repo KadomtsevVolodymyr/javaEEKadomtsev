@@ -2,6 +2,9 @@ package com.example.entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
@@ -19,14 +22,17 @@ public class Book implements Serializable {
     @Column(nullable = false)
     private String author;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String isbn;
 
     @Column(nullable = false)
-    private Double price;
+    private BigDecimal price;
 
     @Column(nullable = false)
     private Integer stock;
+
+    @OneToMany(mappedBy = "book")
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     // Getters and Setters
     public Long getId() {
@@ -61,11 +67,11 @@ public class Book implements Serializable {
         this.isbn = isbn;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -75,5 +81,13 @@ public class Book implements Serializable {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 }

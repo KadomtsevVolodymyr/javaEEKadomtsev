@@ -11,7 +11,7 @@
         <p:panel header="Orders List" style="width: 800px; margin: 0 auto;">
             <p:dataTable id="ordersTable" value="#{orderBean.orders}" var="order" paginator="true" rows="10"
                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                rowsPerPageTemplate="5,10,15">
+                rowsPerPageTemplate="5,10,15" rowKey="#{order.id}">
                 <p:column headerText="ID">
                     <h:outputText value="#{order.id}" />
                 </p:column>
@@ -22,8 +22,8 @@
                     <h:outputText value="#{order.customerEmail}" />
                 </p:column>
                 <p:column headerText="Order Date">
-                    <h:outputText value="#{order.orderDate}">
-                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                    <h:outputText value="#{order.orderDateConverted}">
+                        <f:convertDateTime pattern="yyyy-MM-dd'T'HH:mm:ss.SSS" timeZone="UTC" type="both" />
                     </h:outputText>
                 </p:column>
                 <p:column headerText="Total Amount">
@@ -40,9 +40,29 @@
                             icon="pi pi-exclamation-triangle" />
                     </p:commandButton>
                 </p:column>
+                <p:rowExpansion>
+                    <p:dataTable value="#{order.items}" var="item" style="width: 100%" rowKey="#{item.id}">
+                        <p:column headerText="Book Title">
+                            <h:outputText value="#{item.book.title}" />
+                        </p:column>
+                        <p:column headerText="Quantity">
+                            <h:outputText value="#{item.quantity}" />
+                        </p:column>
+                        <p:column headerText="Price">
+                            <h:outputText value="#{item.book.price}">
+                                <f:convertNumber type="currency" currencySymbol="$" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Subtotal">
+                            <h:outputText value="#{item.book.price * item.quantity}">
+                                <f:convertNumber type="currency" currencySymbol="$" />
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </p:rowExpansion>
             </p:dataTable>
 
-            <p:commandButton value="Add New Order" action="add" style="margin-top: 20px;" />
+            <p:commandButton value="Add New Order" action="#{orderBean.create()}" style="margin-top: 20px;" />
         </p:panel>
 
         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

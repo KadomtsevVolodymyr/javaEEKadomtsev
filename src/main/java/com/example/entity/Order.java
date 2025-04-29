@@ -3,7 +3,11 @@ package com.example.entity;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -23,11 +27,13 @@ public class Order implements Serializable {
     private String shippingAddress;
 
     @Column(name = "order_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date orderDate = new Date();
+    private LocalDateTime orderDate;
 
     @Column(name = "total_amount", nullable = false)
     private BigDecimal totalAmount;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> items = new ArrayList<>();
 
     // Getters and Setters
     public Long getId() {
@@ -62,11 +68,11 @@ public class Order implements Serializable {
         this.shippingAddress = shippingAddress;
     }
 
-    public Date getOrderDate() {
+    public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -76,5 +82,17 @@ public class Order implements Serializable {
 
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
+    }
+
+    public Date getOrderDateConverted() {
+        return Date.from(orderDate.toInstant(ZoneOffset.UTC));
     }
 }

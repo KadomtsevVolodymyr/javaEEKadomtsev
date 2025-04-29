@@ -2,48 +2,41 @@ package com.example.bean;
 
 import com.example.entity.Book;
 import com.example.service.BookService;
-import jakarta.ejb.EJB;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.annotation.PostConstruct;
+import java.io.Serializable;
 import java.util.List;
 
 @Named
-@RequestScoped
-public class BookBean {
+@SessionScoped
+public class BookBean implements Serializable {
 
-    @EJB
+    @Inject
     private BookService bookService;
 
-    private Book book = new Book();
+    private List<Book> books;
 
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
+    @PostConstruct
+    public void init() {
+        refreshBooks();
     }
 
     public List<Book> getBooks() {
-        return bookService.getAllBooks();
+        if (books == null) {
+            refreshBooks();
+        }
+        return books;
     }
 
-    public String save() {
-        bookService.createBook(book);
-        return "list?faces-redirect=true";
+    public void refreshBooks() {
+        books = bookService.getAllBooks();
     }
 
-    public String edit(Book book) {
-        this.book = book;
-        return "edit";
-    }
-
-    public String update() {
-        bookService.updateBook(book);
-        return "list?faces-redirect=true";
-    }
-
-    public void delete(Book book) {
+    public String delete(Book book) {
         bookService.deleteBook(book);
+        refreshBooks();
+        return "list?faces-redirect=true";
     }
 }

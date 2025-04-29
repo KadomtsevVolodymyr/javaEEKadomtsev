@@ -7,9 +7,11 @@
     <persistence-unit name="bookstorePU" transaction-type="JTA">
         <jta-data-source>java:app/jdbc/bookstoreDB</jta-data-source>
         <properties>
-            <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
+            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="jakarta.persistence.sql-load-script-source" value="META-INF/init.sql"/>
             <property name="eclipselink.logging.level" value="FINE"/>
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
         </properties>
     </persistence-unit>
 </persistence> 
